@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>Product | Kenny's Authentic Footwear</title>
+
+  <link rel="stylesheet" href="style.css">
+
+  <!-- AOS -->
+  <link
+    rel="stylesheet"
+    href="https://unpkg.com/aos@2.3.4/dist/aos.css"
+  >
+
+  <!-- Material Symbols -->
+  <link
+    rel="stylesheet"
+    href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined"
+  >
+</head>
+
+<body>
+
+  <!-- NAVBAR -->
+  <nav class="navbar">
+
+    <a href="index.html" class="brand-logo">
+      Kenny's Authentic Footwear
+    </a>
+
+    <div class="nav-links">
+      <a href="index.html#vision">About</a>
+      <a href="index.html#quality">Quality</a>
+      <a href="index.html#lookbook">Lookbook</a>
+      <a href="index.html#contact">Contact</a>
+    </div>
+
+    <div class="nav-right">
+
+      <a href="#" class="nav-btn">
+        Shop
+      </a>
+
+      <button
+        class="hamburger"
+        id="hamburger"
+        aria-label="Open menu"
+      >
+        <span class="material-symbols-outlined">menu</span>
+      </button>
+
+    </div>
+
+  </nav>
+
+
+  <!-- PRODUCT PAGE -->
+
+  <main class="product-page">
+
+    <div class="container">
+
+      <!-- BACK BUTTON -->
+
+      <a
+        href="collections.html"
+        class="back-collection"
+        data-aos="fade-right"
+      >
+        <span>←</span>
+        Back to Collection
+      </a>
+
+
+      <!-- PRODUCT -->
+
+      <section class="product-layout">
+
+        <!-- IMAGE -->
+
+        <div
+          class="product-gallery"
+          data-aos="fade-right"
+        >
+
+          <div class="product-main-image">
+
+            <img
+              id="productImage"
+              src=""
+              alt=""
+            >
+
+          </div>
+
+        </div>
+
+
+        <!-- INFORMATION -->
+
+        <div
+          class="product-details"
+          data-aos="fade-left"
+        >
+
+          <span
+            id="productCategory"
+            class="product-category"
+          >
+          </span>
+
+
+          <h1 id="productName">
+            Loading...
+          </h1>
+
+
+          <p
+            id="productDescription"
+            class="product-description"
+          >
+          </p>
+
+
+          <div class="product-divider"></div>
+
+
+          <!-- PRICE -->
+
+          <div class="product-price">
+
+            <span>
+              Price
+            </span>
+
+            <strong id="productPrice">
+              Contact for price
+            </strong>
+
+          </div>
+
+
+          <!-- SIZES -->
+
+          <div class="product-option">
+
+            <h3>
+              Available Sizes
+            </h3>
+
+            <div
+              id="productSizes"
+              class="size-options"
+            >
+            </div>
+
+          </div>
+
+
+          <!-- COLOUR -->
+
+          <div class="product-option">
+
+            <h3>
+              Colour
+            </h3>
+
+            <p id="productColor">
+              —
+            </p>
+
+          </div>
+
+
+          <!-- ACTION -->
+
+          <a
+            id="whatsappButton"
+            href="#"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="product-whatsapp"
+          >
+            Enquire on WhatsApp
+            <span>→</span>
+          </a>
+
+
+          <p class="product-note">
+            Have a question about this product?
+            Contact us directly and we'll be happy to help.
+          </p>
+
+        </div>
+
+      </section>
+
+    </div>
+
+  </main>
+
+
+  <!-- FOOTER -->
+
+  <footer class="footer">
+
+    <div class="container">
+
+      <h2>
+        Kenny's Authentic Footwear
+      </h2>
+
+      <p>
+        Crafted with purpose. Built to last.
+      </p>
+
+      <div class="copyright">
+        &copy; 2026 Kenny's Authentic Footwear.
+        All rights reserved.
+      </div>
+
+    </div>
+
+  </footer>
+  <!-- AOS -->
+  <script src="script.js"></script>
+  <script src="product.js"></script>
+  <script src="https://unpkg.com/aos@2.3.4/dist/aos.js"></script>
+
+  <script>
+    /* AOS */
+
+    AOS.init({
+      duration: 1400,
+      easing: "ease-in-out",
+      once: true,
+      offset: 120
+    });
+  </script>
+
+</body>
+</html>

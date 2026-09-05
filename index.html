@@ -3,41 +3,34 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
   <title>Kenny's Authentic Footwear | Brand Showcase</title>
-
   <link rel="stylesheet" href="style.css">
-
-  <!-- Material Symbols -->
-  <link rel="stylesheet"
-        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined">
+  <link rel="stylesheet"href="https://unpkg.com/aos@2.3.4/dist/aos.css">
+  <link rel="stylesheet"href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined">
 </head>
 
 <body>
 
   <!-- NAVBAR -->
   <nav class="navbar">
+          <a href="#" class="brand-logo">Kenny's Authentic Footwear</a>
 
-    <a href="#" class="brand-logo">
-      Kenny's Authentic Footwear
-    </a>
+            <div class="nav-links">
+              <a href="#vision">About</a>
+              <a href="#quality">Quality</a>
+              <a href="#lookbook">Lookbook</a>
+              <a href="#contact">Contact</a>
+            </div>
 
-    <div class="nav-links">
-      <a href="#vision">About</a>
-      <a href="#quality">Quality</a>
-      <a href="#lookbook">Lookbook</a>
-      <a href="#contact">Contact</a>
-    </div>
+        <div class="nav-right">
 
-    <div class="nav-right">
+              <a href="#" class="nav-btn">Shop</a>
 
-      <a href="#" class="nav-btn">Shop</a>
+              <button class="hamburger" id="hamburger" aria-label="Open menu">
+                <span class="material-symbols-outlined">menu</span>
+              </button>
 
-      <button class="hamburger" id="hamburger" aria-label="Open menu">
-        <span class="material-symbols-outlined">menu</span>
-      </button>
-
-    </div>
+        </div>
 
   </nav>
 
@@ -74,15 +67,15 @@
 
     <div class="container">
 
-      <span class="section-label">
+      <span class="section-label" data-aos="fade-up">
         OUR VISION
       </span>
 
-      <h2>
+      <h2 data-aos="fade-up" data-aos-delay="100">
         Designed for Purpose. Engineered for Longevity.
       </h2>
 
-      <p class="body-text">
+      <p class="body-text" data-aos="fade-up" data-aos-delay="200">
         At Kenny's Authentic Footwear, we believe shoes are more than
         just an accessory they are your foundation. We set out to
         eliminate the trade-off between style and lasting durability
@@ -117,7 +110,7 @@
 
       <div class="quality-features">
 
-        <div class="quality-feature">
+        <div class="quality-feature" data-aos="fade-up">
 
           <h3>
             Quality Materials
@@ -131,7 +124,7 @@
         </div>
 
 
-        <div class="quality-feature">
+        <div class="quality-feature" data-aos="fade-up" data-aos-delay="100">
 
           <h3>
             Attention to Detail
@@ -145,7 +138,7 @@
         </div>
 
 
-        <div class="quality-feature">
+        <div class="quality-feature" data-aos="fade-up" data-aos-delay="200">
 
           <h3>
             Made for Everyday Life
@@ -185,63 +178,43 @@
 
       <div class="gallery">
 
-        <div class="gallery-item">
+        <div class="gallery-item" data-aos="fade-up">
 
-          <img
-            src="images/1.jpg"
-            alt="Classic Sneaker"
-          >
+          <img src="images/1.jpg"alt="Classic Sneaker">
 
-          <div class="gallery-caption">
-            The Urban Runner
-          </div>
+          <div class="gallery-caption">The Urban Runner</div>
 
         </div>
 
 
-        <div class="gallery-item">
+        <div class="gallery-item" data-aos="fade-up" data-aos-delay="200">
 
-          <img
-            src="images/black.png"
-            alt="Athletic Footwear"
-          >
+          <img src="images/black.png"alt="Athletic Footwear">
 
-          <div class="gallery-caption">
-            The Cross-Strap
-          </div>
+          <div class="gallery-caption"> The Cross-Strap</div>
 
         </div>
 
 
-        <div class="gallery-item">
+        <div class="gallery-item" data-aos="fade-up" data-aos-delay="400">
 
-          <img
-            src="images/sliver.png"
-            alt="Casual Footwear"
-          >
+          <img src="images/sliver.png" alt="Casual Footwear">
 
-          <div class="gallery-caption">
-            The Daily Slip-On
-          </div>
+          <div class="gallery-caption">The Daily Slip-On</div>
 
         </div>
 
 
-        <div class="gallery-item">
+        <div class="gallery-item" data-aos="fade-up" data-aos-delay="600">
 
-          <img
-            src="images/sweet.png"
-            alt="Premium Footwear"
-          >
+          <img src="images/sweet.png" alt="Premium Footwear">
 
-          <div class="gallery-caption">
-            Classic Essential
-          </div>
+          <div class="gallery-caption"> Classic Essential</div>
 
         </div>
 
 
-        <div class="gallery-item">
+        <div class="gallery-item" data-aos="fade-up" data-aos-delay="800">
 
           <img src="images/plenty.png"  alt="Modern Sneaker">
            <div class="gallery-caption">  The Street Edition</div>
@@ -249,7 +222,7 @@
         </div>
 
 
-        <div class="gallery-item">
+        <div class="gallery-item" data-aos="fade-up" data-aos-delay="1000">
 
           <img src="images/bueauty.png"alt="Premium Sneaker" >
           <div class="gallery-caption"> Signature Series</div>
@@ -301,7 +274,7 @@
 
 
         <a
-          href="https://www.tiktok.com/kennysauthenticfootwears"
+          href="https://www.tiktok.com/@kennysauthenticfootwears"
           class="social-btn"
           target="_blank"
           rel="noopener noreferrer"
@@ -321,6 +294,18 @@
   </footer>
 
   <script src="script.js"></script>
+
+  <script src="https://unpkg.com/aos@2.3.4/dist/aos.js"></script>
+
+<script>
+  AOS.init({
+    duration: 1400,
+    easing: 'ease-in-out',
+    once: true,
+    offset: 120,
+    delay: 100
+  });
+</script>
 
 </body>
 </html>
