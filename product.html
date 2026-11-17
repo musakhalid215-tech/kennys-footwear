@@ -54,6 +54,7 @@
   >
 
   <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="catalogue.css">
 
   <!-- AOS -->
   <link
@@ -140,7 +141,13 @@
               alt="Kenny's Authentic Footwear product"
             >
 
+            <button type="button" id="productPrev" class="kx-arrow kx-prev" aria-label="Previous image" hidden>&#8592;</button>
+            <button type="button" id="productNext" class="kx-arrow kx-next" aria-label="Next image" hidden>&#8594;</button>
+            <span id="productCounter" class="kx-counter" aria-live="polite" hidden></span>
+
           </div>
+
+          <div id="productThumbs" class="kx-thumbs" role="group" aria-label="Product images" hidden></div>
 
         </div>
 
@@ -182,9 +189,27 @@
               Price
             </span>
 
-            <strong id="productPrice">
-              Contact for price
-            </strong>
+            <div class="kx-price-wrap">
+              <s id="productPreviousPrice" hidden></s>
+              <strong id="productPrice">
+                Contact for price
+              </strong>
+            </div>
+
+          </div>
+
+
+          <!-- AVAILABILITY -->
+
+          <div class="product-option">
+
+            <h3>
+              Availability
+            </h3>
+
+            <span id="productAvailability" class="kx-badge">
+              &mdash;
+            </span>
 
           </div>
 
@@ -276,6 +301,12 @@
   <!-- SCRIPTS -->
 
   <script src="script.js"></script>
+
+  <!-- Dynamic catalogue (Supabase) -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.min.js"></script>
+  <script src="supabase-config.js"></script>
+  <script src="js/kx-client.js"></script>
+
   <script src="product.js"></script>
 
   <!-- AOS -->

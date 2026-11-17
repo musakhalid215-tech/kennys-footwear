@@ -1,5 +1,9 @@
 // ========================================
 // PRODUCT DATA
+// Built-in list of the original designs. It is now only a FALLBACK: when
+// the Supabase catalogue is live, products come from the database instead
+// (see js/kx-client.js). It is used if the database is not configured or
+// cannot be reached.
 // ========================================
 
 const products = {
@@ -275,14 +279,75 @@ const products = {
 
 const params = new URLSearchParams(window.location.search);
 const productId = params.get("product");
-const product = products[productId];
+
+const DEFAULT_WHATSAPP = "2347038313960";
+
+
+// ========================================
+// NORMALISE PRODUCTS (built-in or database)
+// ========================================
+
+function fromStatic(id) {
+  const p = products[id];
+  if (!p) return null;
+  return {
+    slug: id,
+    name: p.name,
+    categoryLabel: p.category,
+    description: p.description,
+    price: null,
+    priceText: p.price,
+    previousPriceText: "",
+    images: [p.image],
+    sizes: p.sizes,
+    colour: p.color,
+    status: "available"
+  };
+}
+
+function fromDatabase(p, categories) {
+  const cat = (categories || []).find(c => c.slug === p.category);
+  const catName = cat ? cat.name : KX.titleCase(p.category);
+  return {
+    slug: p.slug,
+    name: p.name,
+    categoryLabel: `${KX.GENDER_LABEL[p.gender]} • ${catName}`,
+    description: p.description,
+    price: p.price,
+    priceText: KX.formatPrice(p.price) || "Contact for price",
+    previousPriceText: KX.formatPrice(p.previousPrice) || "",
+    images: p.images.length ? p.images : [],
+    sizes: p.sizes,
+    colour: p.colour || "",
+    status: p.status
+  };
+}
+
+
+// ========================================
+// SMALL HELPERS
+// ========================================
+
+function setContent(selector, attr, value) {
+  const node = document.querySelector(selector);
+  if (node) node.setAttribute(attr, value);
+}
+
+function absoluteImage(url) {
+  return /^https?:\/\//i.test(url)
+    ? url
+    : `https://kennysfootwear.com/${encodeURI(url)}`;
+}
 
 
 // ========================================
 // DISPLAY PRODUCT
 // ========================================
 
-if (product && document.getElementById("productName")) {
+function renderProduct(product, whatsappNumber) {
+
+  const soldOut = product.status === "sold_out";
+  const images = product.images.length ? product.images : ["images/1.jpg"];
 
   // ----------------------------------------
   // PRODUCT SEO
@@ -295,182 +360,209 @@ if (product && document.getElementById("productName")) {
     `${product.description} Explore ${product.name} from Kenny's Authentic Footwear. View available sizes, colour and product details.`;
 
   const productURL =
-    `https://kennysfootwear.com/product.html?product=${encodeURIComponent(productId)}`;
+    `https://kennysfootwear.com/product.html?product=${encodeURIComponent(product.slug)}`;
 
-  const productImageURL =
-    `https://kennysfootwear.com/${product.image}`;
+  const productImageURL = absoluteImage(images[0]);
 
-
-  // Browser title
   document.title = pageTitle;
+  setContent('meta[name="description"]', "content", pageDescription);
+  setContent('link[rel="canonical"]', "href", productURL);
+
+  // Open Graph
+  setContent('meta[property="og:title"]', "content", pageTitle);
+  setContent('meta[property="og:description"]', "content", pageDescription);
+  setContent('meta[property="og:url"]', "content", productURL);
+  setContent('meta[property="og:image"]', "content", productImageURL);
 
 
-  // Meta description
-  let metaDescription =
-    document.querySelector('meta[name="description"]');
+  // ----------------------------------------
+  // TEXT DETAILS
+  // ----------------------------------------
 
-  if (metaDescription) {
-    metaDescription.setAttribute(
-      "content",
-      pageDescription
-    );
+  document.getElementById("productName").textContent = product.name;
+  document.getElementById("productCategory").textContent = product.categoryLabel;
+  document.getElementById("productDescription").textContent = product.description;
+  document.getElementById("productPrice").textContent = product.priceText;
+  document.getElementById("productColor").textContent = product.colour || "—";
+
+  const previous = document.getElementById("productPreviousPrice");
+  if (previous && product.previousPriceText) {
+    previous.textContent = product.previousPriceText;
+    previous.hidden = false;
   }
 
-
-  // Canonical URL
-  let canonical =
-    document.querySelector('link[rel="canonical"]');
-
-  if (canonical) {
-    canonical.setAttribute(
-      "href",
-      productURL
-    );
+  const availability = document.getElementById("productAvailability");
+  if (availability) {
+    availability.textContent = soldOut ? "Sold Out" : "Available";
+    availability.className = "kx-badge" + (soldOut ? " kx-badge-sold" : "");
   }
 
 
   // ----------------------------------------
-  // OPEN GRAPH
+  // IMAGE GALLERY (main image + thumbnails + arrows + swipe)
   // ----------------------------------------
 
-  const ogTitle =
-    document.querySelector('meta[property="og:title"]');
+  const mainImage = document.getElementById("productImage");
+  const thumbs = document.getElementById("productThumbs");
+  const prevBtn = document.getElementById("productPrev");
+  const nextBtn = document.getElementById("productNext");
+  const counter = document.getElementById("productCounter");
+  const encode = u => (/^https?:\/\//i.test(u) ? u : encodeURI(u));
+  let current = 0;
 
-  if (ogTitle) {
-    ogTitle.setAttribute(
-      "content",
-      pageTitle
-    );
+  function showImage(index) {
+    current = (index + images.length) % images.length;
+    mainImage.src = encode(images[current]);
+    mainImage.alt = images.length > 1
+      ? `${product.name} - image ${current + 1} of ${images.length}`
+      : `${product.name} - Kenny's Authentic Footwear`;
+    if (counter) counter.textContent = `${current + 1} / ${images.length}`;
+    if (thumbs) {
+      [...thumbs.children].forEach((t, i) => {
+        t.classList.toggle("kx-active", i === current);
+        t.setAttribute("aria-current", i === current ? "true" : "false");
+      });
+    }
   }
 
-
-  const ogDescription =
-    document.querySelector('meta[property="og:description"]');
-
-  if (ogDescription) {
-    ogDescription.setAttribute(
-      "content",
-      pageDescription
-    );
+  if (thumbs) {
+    thumbs.innerHTML = "";
+    images.forEach((url, i) => {
+      const thumb = document.createElement("button");
+      thumb.type = "button";
+      thumb.className = "kx-thumb";
+      thumb.setAttribute("aria-label", `Show image ${i + 1}`);
+      const t = document.createElement("img");
+      t.src = encode(url);
+      t.alt = "";
+      t.loading = "lazy";
+      thumb.appendChild(t);
+      thumb.addEventListener("click", () => showImage(i));
+      thumbs.appendChild(thumb);
+    });
   }
 
+  const multiple = images.length > 1;
+  [prevBtn, nextBtn, counter, thumbs].forEach(n => { if (n) n.hidden = !multiple; });
 
-  const ogURL =
-    document.querySelector('meta[property="og:url"]');
+  if (multiple) {
+    if (prevBtn) prevBtn.addEventListener("click", () => showImage(current - 1));
+    if (nextBtn) nextBtn.addEventListener("click", () => showImage(current + 1));
 
-  if (ogURL) {
-    ogURL.setAttribute(
-      "content",
-      productURL
-    );
+    document.addEventListener("keydown", e => {
+      const tag = (e.target.tagName || "").toLowerCase();
+      if (tag === "input" || tag === "textarea" || tag === "select") return;
+      if (e.key === "ArrowLeft") showImage(current - 1);
+      if (e.key === "ArrowRight") showImage(current + 1);
+    });
+
+    let startX = null;
+    mainImage.addEventListener("touchstart", e => { startX = e.touches[0].clientX; }, { passive: true });
+    mainImage.addEventListener("touchend", e => {
+      if (startX === null) return;
+      const dx = e.changedTouches[0].clientX - startX;
+      startX = null;
+      if (Math.abs(dx) > 40) showImage(current + (dx < 0 ? 1 : -1));
+    });
   }
 
-
-  const ogImage =
-    document.querySelector('meta[property="og:image"]');
-
-  if (ogImage) {
-    ogImage.setAttribute(
-      "content",
-      productImageURL
-    );
-  }
+  showImage(0);
 
 
   // ----------------------------------------
-  // PRODUCT DISPLAY
-  // ----------------------------------------
-
-  document.getElementById("productImage").src =
-    product.image;
-
-  document.getElementById("productImage").alt =
-    `${product.name} - Kenny's Authentic Footwear`;
-
-  document.getElementById("productName").textContent =
-    product.name;
-
-  document.getElementById("productCategory").textContent =
-    product.category;
-
-  document.getElementById("productDescription").textContent =
-    product.description;
-
-  document.getElementById("productPrice").textContent =
-    product.price;
-
-  document.getElementById("productColor").textContent =
-    product.color;
-
-
-  // ========================================
   // PRODUCT STRUCTURED DATA
-  // ========================================
+  // ----------------------------------------
 
   const structuredData = {
     "@context": "https://schema.org",
     "@type": "Product",
     "name": product.name,
     "description": product.description,
-    "image": [
-      productImageURL
-    ],
+    "image": images.map(absoluteImage),
     "brand": {
       "@type": "Brand",
       "name": "Kenny's Authentic Footwear"
     },
-    "category": product.category
+    "category": product.categoryLabel
   };
 
+  if (product.price) {
+    structuredData.offers = {
+      "@type": "Offer",
+      "priceCurrency": "NGN",
+      "price": String(product.price),
+      "availability": soldOut
+        ? "https://schema.org/OutOfStock"
+        : "https://schema.org/InStock",
+      "url": productURL
+    };
+  }
 
-  const structuredDataScript =
-    document.createElement("script");
-
-  structuredDataScript.type =
-    "application/ld+json";
-
-  structuredDataScript.textContent =
-    JSON.stringify(structuredData);
-
-  document.head.appendChild(
-    structuredDataScript
-  );
+  const structuredDataScript = document.createElement("script");
+  structuredDataScript.type = "application/ld+json";
+  structuredDataScript.textContent = JSON.stringify(structuredData);
+  document.head.appendChild(structuredDataScript);
 
 
-  // ========================================
+  // ----------------------------------------
   // SIZES
-  // ========================================
+  // ----------------------------------------
 
-  const sizesContainer =
-    document.getElementById("productSizes");
-
+  const sizesContainer = document.getElementById("productSizes");
   sizesContainer.innerHTML = "";
+
+  let selectedSize = "";
 
   product.sizes.forEach(size => {
 
-    const sizeButton =
-      document.createElement("button");
+    const sizeButton = document.createElement("button");
 
     sizeButton.textContent = size;
     sizeButton.className = "size-btn";
+    sizeButton.type = "button";
+
+    sizeButton.addEventListener("click", () => {
+      selectedSize = selectedSize === size ? "" : size;
+      [...sizesContainer.children].forEach(b =>
+        b.classList.toggle("kx-selected", b.textContent === selectedSize)
+      );
+      updateWhatsApp();
+    });
 
     sizesContainer.appendChild(sizeButton);
 
   });
 
+  if (!product.sizes.length) {
+    sizesContainer.textContent = "Contact us for available sizes.";
+  }
 
-  // ========================================
+
+  // ----------------------------------------
   // WHATSAPP
-  // ========================================
+  // ----------------------------------------
 
-  const message =
-    `Hello Kenny's Authentic Footwear, I am interested in the ${product.name}. Please provide more information.`;
+  const whatsappButton = document.getElementById("whatsappButton");
+  const number = /^\d{8,15}$/.test(whatsappNumber || "")
+    ? whatsappNumber
+    : DEFAULT_WHATSAPP;
 
-  const whatsappURL =
-    `https://wa.me/2347038313960?text=${encodeURIComponent(message)}`;
+  function updateWhatsApp() {
+    let message = soldOut
+      ? `Hello Kenny's Authentic Footwear, I saw that the ${product.name} is sold out. Will it be available again?`
+      : `Hello Kenny's Authentic Footwear, I am interested in the ${product.name}. Please provide more information.`;
 
-  document.getElementById("whatsappButton").href =
-    whatsappURL;
+    if (selectedSize && !soldOut) message += ` I am interested in size ${selectedSize}.`;
+
+    whatsappButton.href =
+      `https://wa.me/${number}?text=${encodeURIComponent(message)}`;
+  }
+
+  if (soldOut && whatsappButton.firstChild) {
+    whatsappButton.firstChild.nodeValue = "Ask About Restock ";
+  }
+
+  updateWhatsApp();
 
 }
 
@@ -479,7 +571,7 @@ if (product && document.getElementById("productName")) {
 // PRODUCT NOT FOUND
 // ========================================
 
-else {
+function renderNotFound() {
 
   const productName =
     document.getElementById("productName");
@@ -498,6 +590,53 @@ else {
     productDescription.textContent =
       "Sorry, we couldn't find the product you're looking for.";
 
+    const thumbs = document.getElementById("productThumbs");
+    if (thumbs) thumbs.hidden = true;
+
   }
 
 }
+
+
+// ========================================
+// START: database first, built-in list as fallback
+// ========================================
+
+async function loadProduct() {
+
+  if (!document.getElementById("productName")) return;
+
+  let product = null;
+  let whatsapp = "";
+
+  if (window.KX && KX.ready) {
+    try {
+      const settings = await KX.getSettings();
+      whatsapp = settings.whatsapp;
+
+      if (settings.live) {
+        const [row, categories] = await Promise.all([
+          KX.fetchProductBySlug(productId),
+          KX.fetchCategories().catch(() => [])
+        ]);
+        product = row ? fromDatabase(row, categories) : null;
+      } else {
+        product = fromStatic(productId);
+      }
+    } catch (error) {
+      // Database unreachable: use the built-in list so the page still works.
+      product = fromStatic(productId);
+    }
+  } else {
+    product = fromStatic(productId);
+  }
+
+  if (product) {
+    renderProduct(product, whatsapp);
+  } else {
+    renderNotFound();
+  }
+
+}
+
+loadProduct();
