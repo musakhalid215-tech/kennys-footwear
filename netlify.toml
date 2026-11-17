@@ -1,0 +1,8 @@
+# Netlify build settings for kennysfootwear.com
+# The site is plain HTML/CSS/JS. The only build step writes the two PUBLIC
+# Supabase values from your Netlify environment variables into
+# supabase-config.js. If the variables are not set, the committed
+# supabase-config.js is used as-is.
+[build]
+  publish = "."
+  command = "node scripts/build-config.js"

@@ -1,48 +1,63 @@
 <!DOCTYPE html><html lang="en"><head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">  <title>Footwear Collections | Kenny's Authentic Footwear</title><meta
-name="description"
-content="Explore Kenny's Authentic Footwear collections for men and women, featuring casual, premium, stylish and everyday footwear for different occasions."
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Footwear Collections | Kenny's Authentic Footwear</title>
 
-«»
+  <meta
+    name="description"
+    content="Explore Kenny's Authentic Footwear collections for men and women, featuring casual, premium, stylish and everyday footwear for different occasions."
+  >
 
-  <meta name="robots" content="index, follow">  <meta name="author" content="Kenny's Authentic Footwear">  <link
+  <meta name="robots" content="index, follow">
+  <meta name="author" content="Kenny's Authentic Footwear">
+
+  <link
     rel="canonical"
     href="https://kennysfootwear.com/collections.html"
-  >  <!-- Open Graph / Social Sharing --><meta
-property="og:title"
-content="Footwear Collections | Kenny's Authentic Footwear"
+  >
 
-«»
+  <!-- Open Graph / Social Sharing -->
+  <meta
+    property="og:title"
+    content="Footwear Collections | Kenny's Authentic Footwear"
+  >
 
-<meta
-property="og:description"
-content="Explore Kenny's Authentic Footwear collections for men and women, featuring casual, premium, stylish and everyday footwear."
+  <meta
+    property="og:description"
+    content="Explore Kenny's Authentic Footwear collections for men and women, featuring casual, premium, stylish and everyday footwear."
+  >
 
-«»
+  <meta property="og:type" content="website">
 
-  <meta property="og:type" content="website"><meta
-property="og:url"
-content="https://kennysfootwear.com/collections.html"
+  <meta
+    property="og:url"
+    content="https://kennysfootwear.com/collections.html"
+  >
 
-«»
+  <meta
+    property="og:site_name"
+    content="Kenny's Authentic Footwear"
+  >
 
-<meta
-property="og:site_name"
-content="Kenny's Authentic Footwear"
+  <meta
+    property="og:image"
+    content="https://kennysfootwear.com/images/1.jpg"
+  >
 
-«»
+  <!-- Stylesheet -->
+  <link rel="stylesheet" href="style.css">
 
-<meta
-property="og:image"
-content="https://kennysfootwear.com/images/1.jpg"
+  <!-- Dynamic catalogue additions (kx- prefixed, loaded after style.css) -->
+  <link rel="stylesheet" href="catalogue.css">
 
-«»
-
-  <!-- Stylesheet -->  <link rel="stylesheet" href="style.css">  <!-- AOS CSS -->  <link
+  <!-- AOS CSS -->
+  <link
     rel="stylesheet"
     href="https://unpkg.com/aos@2.3.4/dist/aos.css"
-  >  <!-- Material Symbols -->  <link
+  >
+
+  <!-- Material Symbols -->
+  <link
     rel="stylesheet"
     href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined"
   >
@@ -169,7 +184,7 @@ content="https://kennysfootwear.com/images/1.jpg"
 
 
   <!-- PRODUCTS -->
-  <div class="collection-grid">
+  <div class="collection-grid" id="kxStaticGrid">
 
 
     <!-- PRODUCT 1 -->
@@ -398,7 +413,7 @@ content="https://kennysfootwear.com/images/1.jpg"
         </p>
 
         <a
-          href="product.html?product=strrtrdition"
+          href="product.html?product=streetedition"
           class="view-product"
           aria-label="View details for The Street Edition"
         >
@@ -449,7 +464,7 @@ content="https://kennysfootwear.com/images/1.jpg"
         </p>
 
         <a
-          href="product.html?product=signatreseries"
+          href="product.html?product=signatureseries"
           class="view-product"
           aria-label="View details for Signature Series"
         >
@@ -1337,7 +1352,13 @@ content="https://kennysfootwear.com/images/1.jpg"
 
 </div>
 
-  </footer>  <script src="script.js"></script>  <!-- AOS JS -->  <script
+  </footer>  <script src="script.js"></script>
+
+  <!-- Dynamic catalogue (Supabase) -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.min.js"></script>
+  <script src="supabase-config.js"></script>
+  <script src="js/kx-client.js"></script>
+  <script src="js/catalogue.js"></script>  <!-- AOS JS -->  <script
     src="https://unpkg.com/aos@2.3.4/dist/aos.js">
   </script>  <!-- AOS INITIALIZATION -->  <script>
     AOS.init({
@@ -1347,4 +1368,4 @@ content="https://kennysfootwear.com/images/1.jpg"
       offset: 80
     });
   </script></body>
-</html>
+</html>

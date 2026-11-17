@@ -36,6 +36,11 @@ if (filterButtons.length && collectionCards.length) {
 
     button.addEventListener("click", () => {
 
+      // The dynamic catalogue (js/catalogue.js) handles filtering itself
+      // once it has switched the page to live database products.
+      if (document.body.hasAttribute("data-kx-live")) return;
+
+
       // Remove active from all buttons
       filterButtons.forEach(btn => {
         btn.classList.remove("active");
@@ -72,4 +77,4 @@ if (filterButtons.length && collectionCards.length) {
 
   });
 
-}
+}
