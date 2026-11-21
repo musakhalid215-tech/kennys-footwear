@@ -15,7 +15,7 @@
       rewrites this file for you on every deploy.
 */
 window.KENNYS_CONFIG = {
-  SUPABASE_URL: "https://YOUR-PROJECT-REF.supabase.co",
-  SUPABASE_ANON_KEY: "YOUR-PUBLIC-ANON-KEY",
+  SUPABASE_URL: "https://rpcnsogbmppfdpxaewac.supabase.co",
+  SUPABASE_ANON_KEY: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InJwY25zb2dibXBwZmRweGFld2FjIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTQ4NzQ4NTYsImV4cCI6MjExMDQ1MDg1Nn0.TT21C28dWgXqScfVo_y--xjFYPk5GhpjtHcCR38YGSo",
   STORAGE_BUCKET: "product-images"
 };
